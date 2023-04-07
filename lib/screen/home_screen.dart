@@ -1,0 +1,122 @@
+import 'package:flutter/material.dart';
+import 'package:restaurant/screen/restaurant_detail_screen.dart';
+
+import '../models/restaurant.dart';
+
+class HomeScreen extends StatelessWidget {
+  static String routeName = "/home";
+
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // appBar: AppBar(title: Text('Restaurant App'), ),
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            ..._buildHomeHeader(context),
+            _buildHomeBody(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Expanded _buildHomeBody(BuildContext context) {
+    Future<String> localRestaurantsData = DefaultAssetBundle.of(context)
+        .loadString('assets/local_restaurant.json');
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 4.0),
+        child: FutureBuilder<String>(
+          future: localRestaurantsData,
+          builder: (context, snapshot) {
+            final List<Restaurant> restaurant = parseRestaurants(snapshot.data);
+            return ListView.builder(
+              itemCount: restaurant.length,
+              itemBuilder: (context, index) {
+                return ItemList(restaurant: restaurant[index]);
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildHomeHeader(BuildContext context) {
+    return [
+      Text(
+        'Restaurant Apps',
+        style: Theme.of(context)
+            .textTheme
+            .headline4
+            ?.copyWith(color: Colors.black),
+      ),
+      Text(
+        'Recommendation restaurant near you!',
+        style: Theme.of(context).textTheme.subtitle1,
+      ),
+    ];
+  }
+}
+
+class ItemList extends StatelessWidget {
+  const ItemList({
+    super.key,
+    required this.restaurant,
+  });
+
+  final Restaurant restaurant;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      GestureDetector(
+        onTap: () => Navigator.of(context).pushNamed(
+            RestaurantDetailScreen.routeName,
+            arguments: restaurant),
+        child: ListTile(
+          leading: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minWidth: 85,
+              minHeight: 85,
+              maxWidth: 85,
+              maxHeight: 85,
+            ),
+            child: Hero(
+              tag: restaurant.pictureId,
+              child: Image.network(
+                restaurant.pictureId,
+                width: 100,
+                errorBuilder: (ctx, error, _) =>
+                    const Center(child: Icon(Icons.error)),
+              ),
+            ),
+          ),
+          title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  restaurant.name,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                Text(
+                  '${restaurant.description}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.copyWith(
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  maxLines: 2,
+                )
+              ]),
+        ),
+      ),
+      Divider(height: 8, thickness: 1.2),
+    ]);
+  }
+}
