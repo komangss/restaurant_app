@@ -5,34 +5,42 @@ import '../data/api_service.dart';
 class RestaurantListProvider extends ChangeNotifier {
   final ApiService apiService;
 
+  late RestaurantListResponse _restaurantListResponse;
+  RestaurantListResponse get restaurantListResponse => _restaurantListResponse;
+
+  late GetRestaurantListState _state;
+  GetRestaurantListState get state => _state;
+  void _setState(GetRestaurantListState state) {
+    _state = state;
+    notifyListeners();
+  }
+
+  late String _errorMessage;
+  String get errorMessage => _errorMessage;
+  void _setErrorState(String errorMessage) {
+    _errorMessage = errorMessage;
+    _state = GetRestaurantListState.error;
+    notifyListeners();
+  }
+
   RestaurantListProvider({required this.apiService}) {
     _fetchRestaurantList();
   }
 
   Future<void> _fetchRestaurantList() async {
     try {
-      _state = GetRestaurantListState.loading;
-      notifyListeners();
+      _setState(GetRestaurantListState.loading);
       final getRestaurantListResult = await apiService.getRestaurantList();
       if (getRestaurantListResult.restaurants == null) {
-        _state = GetRestaurantListState.noData;
-        notifyListeners();
+        _setState(GetRestaurantListState.noData);
       } else {
-        _state = GetRestaurantListState.hasData;
-        notifyListeners();
         _restaurantListResponse = getRestaurantListResult;
+        _setState(GetRestaurantListState.hasData);
       }
     } catch (e) {
-      _state = GetRestaurantListState.error;
-      notifyListeners();
+      _setErrorState(e.toString());
     }
   }
-
-  late RestaurantListResponse _restaurantListResponse;
-  RestaurantListResponse get restaurantListResponse => _restaurantListResponse;
-
-  late GetRestaurantListState _state;
-  GetRestaurantListState get state => _state;
 }
 
 enum GetRestaurantListState { loading, noData, hasData, error }

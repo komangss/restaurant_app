@@ -49,8 +49,14 @@ class HomeScreen extends StatelessWidget {
                 },
               );
             } else {
-              return const Center(
-                child: Text('Error, please try restart the app'),
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                     Image.asset('assets/images/sorry.jpg'),
+                    Text('Error: ${restaurantListState.errorMessage.substring(10)}'),
+                  ],
+                ),
               );
             }
           },
@@ -88,8 +94,9 @@ class ItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       GestureDetector(
-        onTap: () => Navigator.of(context)
-            .pushNamed(RestaurantDetailScreen.routeName, arguments: restaurant.id),
+        onTap: () => Navigator.of(context).pushNamed(
+            RestaurantDetailScreen.routeName,
+            arguments: restaurant.id),
         child: ListTile(
           leading: ConstrainedBox(
             constraints: const BoxConstraints(
@@ -106,7 +113,7 @@ class ItemList extends StatelessWidget {
                       child: Placeholder(),
                     )
                   : Image.network(
-                'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
+                      'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
                       width: 100,
                       errorBuilder: (ctx, error, _) =>
                           const Center(child: Icon(Icons.error)),
