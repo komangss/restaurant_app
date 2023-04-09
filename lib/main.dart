@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant/provider/restaurant_detail_provider.dart';
+import 'package:restaurant/provider/restaurant_list_provider.dart';
 import 'package:restaurant/screen/restaurant_detail_screen.dart';
-import '/models/restaurant.dart';
 import '/styles/typhography.dart';
 
+import 'data/api_service.dart';
 import 'screen/home_screen.dart';
 import 'styles/app_bar.dart';
 
@@ -21,10 +24,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(textTheme: mainTextTheme, appBarTheme: appBarTheme),
       initialRoute: HomeScreen.routeName,
       routes: {
-        HomeScreen.routeName: (context) => const HomeScreen(),
-        RestaurantDetailScreen.routeName: (context) => RestaurantDetailScreen(
-              restaurant:
-                  ModalRoute.of(context)?.settings.arguments as Restaurant,
+        HomeScreen.routeName: (context) =>
+            ChangeNotifierProvider<RestaurantListProvider>(
+              create: (_) => RestaurantListProvider(apiService: ApiService()),
+              child: const HomeScreen(),
+            ),
+        RestaurantDetailScreen.routeName: (context) =>
+            ChangeNotifierProvider<RestaurantDetailProvider>(
+              create: (_) => RestaurantDetailProvider(
+                  apiService: ApiService(),
+                  // ToDo: cok kok ada 2 restaurant id
+                  restaurantId:
+                      ModalRoute.of(context)?.settings.arguments as String),
+              child: RestaurantDetailScreen(
+                  restaurantId:
+                      ModalRoute.of(context)?.settings.arguments as String),
             ),
       },
     );

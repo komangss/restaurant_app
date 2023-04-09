@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restaurant/screen/restaurant_detail_screen.dart';
-
 import '../models/restaurant.dart';
+import '../provider/restaurant_list_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   static String routeName = "/home";
@@ -30,16 +31,30 @@ class HomeScreen extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(top: 4.0),
-        child: FutureBuilder<String>(
-          future: localRestaurantsData,
-          builder: (context, snapshot) {
-            final List<Restaurant> restaurant = parseRestaurants(snapshot.data);
-            return ListView.builder(
-              itemCount: restaurant.length,
-              itemBuilder: (context, index) {
-                return ItemList(restaurant: restaurant[index]);
-              },
-            );
+        child: Consumer<RestaurantListProvider>(
+          builder: (context, restaurantListState, child) {
+            if (restaurantListState.state == GetRestaurantListState.loading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (restaurantListState.state ==
+                GetRestaurantListState.noData) {
+              return const Center(
+                child: Text('No Data'),
+              );
+            } else if (restaurantListState.state ==
+                GetRestaurantListState.hasData) {
+              final List<Restaurant> restaurant =
+                  restaurantListState.restaurantListResponse.restaurants!;
+              return ListView.builder(
+                itemCount: restaurant.length,
+                itemBuilder: (context, index) {
+                  return ItemList(restaurant: restaurant[index]);
+                },
+              );
+            } else {
+              return const Center(
+                child: Text('Error, please try restart the app'),
+              );
+            }
           },
         ),
       ),
@@ -75,9 +90,8 @@ class ItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       GestureDetector(
-        onTap: () => Navigator.of(context).pushNamed(
-            RestaurantDetailScreen.routeName,
-            arguments: restaurant),
+        onTap: () => Navigator.of(context)
+            .pushNamed(RestaurantDetailScreen.routeName, arguments: restaurant.id),
         child: ListTile(
           leading: ConstrainedBox(
             constraints: const BoxConstraints(
@@ -87,33 +101,34 @@ class ItemList extends StatelessWidget {
               maxHeight: 85,
             ),
             child: Hero(
-              tag: restaurant.pictureId,
-              child: Image.network(
-                restaurant.pictureId,
-                width: 100,
-                errorBuilder: (ctx, error, _) =>
-                    const Center(child: Icon(Icons.error)),
-              ),
+              tag: restaurant.pictureId ?? '',
+              child: restaurant.pictureId == null
+                  ? Container(
+                      height: 100,
+                      child: Placeholder(),
+                    )
+                  : Image.network(
+                'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
+                      width: 100,
+                      errorBuilder: (ctx, error, _) =>
+                          const Center(child: Icon(Icons.error)),
+                    ),
             ),
           ),
-          title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  restaurant.name,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                Text(
-                  '${restaurant.description}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                  maxLines: 2,
-                )
-              ]),
+          title:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              restaurant.name ?? '',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            Text(
+              '${restaurant.description}',
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              maxLines: 2,
+            )
+          ]),
         ),
       ),
       Divider(height: 8, thickness: 1.2),
