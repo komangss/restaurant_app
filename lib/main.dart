@@ -21,7 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Restaurant App',
-      theme: ThemeData(textTheme: mainTextTheme, appBarTheme: appBarTheme),
+      theme: ThemeData(
+          textTheme: mainTextTheme,
+          appBarTheme: appBarTheme,
+          splashColor: Colors.black),
       initialRoute: HomeScreen.routeName,
       routes: {
         HomeScreen.routeName: (context) =>
@@ -36,10 +39,8 @@ class MyApp extends StatelessWidget {
                   // ToDo: cok kok ada 2 restaurant id
                   restaurantId:
                       ModalRoute.of(context)?.settings.arguments as String),
-              child: RestaurantDetailScreen(
-                  restaurantId:
-                      ModalRoute.of(context)?.settings.arguments as String),
-            ),
+              child: const RestaurantDetailScreen(),
+            )
       },
     );
   }

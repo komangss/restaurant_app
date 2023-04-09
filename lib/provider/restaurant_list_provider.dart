@@ -24,10 +24,10 @@ class RestaurantListProvider extends ChangeNotifier {
   }
 
   RestaurantListProvider({required this.apiService}) {
-    _fetchRestaurantList();
+    fetchRestaurantList();
   }
 
-  Future<void> _fetchRestaurantList() async {
+  Future<void> fetchRestaurantList() async {
     try {
       _setState(GetRestaurantListState.loading);
       final getRestaurantListResult = await apiService.getRestaurantList();

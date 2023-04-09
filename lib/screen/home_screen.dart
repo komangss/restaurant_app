@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 4.0),
         child: Consumer<RestaurantListProvider>(
-          builder: (context, restaurantListState, child) {
+          builder: (_, restaurantListState, __) {
             if (restaurantListState.state == GetRestaurantListState.loading) {
               return const Center(child: CircularProgressIndicator.adaptive());
             } else if (restaurantListState.state ==
@@ -53,8 +53,28 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                     Image.asset('assets/images/sorry.jpg'),
-                    Text('Error: ${restaurantListState.errorMessage.substring(10)}'),
+                    Image.asset('assets/images/sorry.jpg'),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                          'Error: ${restaurantListState.errorMessage.substring(10)}'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: OutlinedButton.icon(
+                        icon: const Icon(
+                          Icons.refresh,
+                          color: Colors.black,
+                        ),
+                        onPressed: () async {
+                          Provider.of<RestaurantListProvider>(context, listen: false).fetchRestaurantList();
+                        },
+                        label: Text(
+                          'Refresh',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               );

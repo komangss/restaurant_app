@@ -7,9 +7,7 @@ import '../models/restaurant.dart';
 class RestaurantDetailScreen extends StatelessWidget {
   static const routeName = '/restaurant_detail';
 
-  final String restaurantId;
-
-  const RestaurantDetailScreen({super.key, required this.restaurantId});
+  const RestaurantDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
