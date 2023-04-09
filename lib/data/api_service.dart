@@ -7,7 +7,7 @@ class ApiService {
   static const String _baseUrl = 'https://restaurant-api.dicoding.dev';
   
   Future<RestaurantListResponse> getRestaurantList() async {
-    final response = await http.get(Uri.parse("${_baseUrl}/list"));
+    final response = await http.get(Uri.parse("$_baseUrl/list"));
     var responseBody = json.decode(response.body);
 
     if (response.statusCode == 200 && responseBody['error'] != true) {    
@@ -18,7 +18,7 @@ class ApiService {
   }
   
   Future<RestaurantDetailResponse> getRestaurantDetail(String id) async {
-    final response = await http.get(Uri.parse("${_baseUrl}/detail/$id"));
+    final response = await http.get(Uri.parse("$_baseUrl/detail/$id"));
     var responseBody = json.decode(response.body);
 
     if (response.statusCode == 200 && responseBody['error'] != true) {    

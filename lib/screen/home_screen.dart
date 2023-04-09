@@ -26,8 +26,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   Expanded _buildHomeBody(BuildContext context) {
-    Future<String> localRestaurantsData = DefaultAssetBundle.of(context)
-        .loadString('assets/local_restaurant.json');
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(top: 4.0),
