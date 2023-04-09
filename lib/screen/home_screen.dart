@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
         child: Consumer<RestaurantListProvider>(
           builder: (context, restaurantListState, child) {
             if (restaurantListState.state == GetRestaurantListState.loading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator.adaptive());
             } else if (restaurantListState.state ==
                 GetRestaurantListState.noData) {
               return const Center(
