@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
       child: TextField(
         decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-          hintText: 'Enter a search term',
+          hintText: 'Enter a name or location here...',
           prefixIcon: const Icon(
             Icons.search_rounded,
             color: Colors.black45,
