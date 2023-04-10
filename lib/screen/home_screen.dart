@@ -12,15 +12,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: Text('Restaurant App'), ),
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            ..._buildHomeHeader(context),
-            _buildSearchInput(context),
-            _buildHomeBody(context),
-          ],
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints:
+              BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+          child: SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                ..._buildHomeHeader(context),
+                _buildSearchInput(context),
+                _buildHomeBody(context),
+              ],
+            ),
+          ),
         ),
       ),
     );
