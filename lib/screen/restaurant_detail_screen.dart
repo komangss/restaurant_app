@@ -102,7 +102,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                 child: Placeholder(),
               )
             : Image.network(
-                'https://restaurant-api.dicoding.dev/images/medium/${pictureId}',
+                'https://restaurant-api.dicoding.dev/images/medium/$pictureId',
                 fit: BoxFit.cover,
                 errorBuilder: (ctx, error, _) =>
                     const Center(child: Icon(Icons.error)),
@@ -114,7 +114,7 @@ class RestaurantDetailScreen extends StatelessWidget {
   Column buildRestaurantDetail(Restaurant restaurant, BuildContext context) {
     var drinks = restaurant.menus!.drinks?.map((Category c) => c.name).toList();
     var foods = restaurant.menus!.foods?.map((Category c) => c.name).toList();
-    var chipTextStyle = Theme.of(context).textTheme.bodyText2?.copyWith(
+    var chipTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
           fontSize: 14,
         );
     return Column(
@@ -140,7 +140,7 @@ class RestaurantDetailScreen extends StatelessWidget {
             ' ( $rating )',
             style: Theme.of(context)
                 .textTheme
-                .bodyText2
+                .bodyMedium
                 ?.copyWith(color: Colors.black54),
           )
         ],

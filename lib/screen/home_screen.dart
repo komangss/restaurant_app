@@ -102,7 +102,7 @@ class HomeScreen extends StatelessWidget {
                         },
                         label: Text(
                           'Refresh',
-                          style: Theme.of(context).textTheme.subtitle2,
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ),
                     )
@@ -122,12 +122,12 @@ class HomeScreen extends StatelessWidget {
         'Restaurant Apps',
         style: Theme.of(context)
             .textTheme
-            .headline4
+            .headlineMedium
             ?.copyWith(color: Colors.black),
       ),
       Text(
         'Recommendation restaurant near you!',
-        style: Theme.of(context).textTheme.subtitle1,
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     ];
   }
@@ -159,7 +159,7 @@ class ItemList extends StatelessWidget {
             child: Hero(
               tag: restaurant.pictureId ?? '',
               child: restaurant.pictureId == null
-                  ? Container(
+                  ? const SizedBox(
                       height: 100,
                       child: Placeholder(),
                     )
@@ -175,11 +175,11 @@ class ItemList extends StatelessWidget {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
               restaurant.name ?? '',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             Text(
               '${restaurant.description}',
-              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     overflow: TextOverflow.ellipsis,
                   ),
               maxLines: 2,
@@ -187,7 +187,7 @@ class ItemList extends StatelessWidget {
           ]),
         ),
       ),
-      Divider(height: 8, thickness: 1.2),
+      const Divider(height: 8, thickness: 1.2),
     ]);
   }
 }
