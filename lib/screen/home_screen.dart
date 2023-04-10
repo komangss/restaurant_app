@@ -30,18 +30,18 @@ class HomeScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 4.0),
         child: Consumer<RestaurantListProvider>(
-          builder: (_, restaurantListState, __) {
-            if (restaurantListState.state == GetRestaurantListState.loading) {
+          builder: (_, restaurantListProvider, __) {
+            if (restaurantListProvider.state == GetRestaurantListState.loading) {
               return const Center(child: CircularProgressIndicator.adaptive());
-            } else if (restaurantListState.state ==
+            } else if (restaurantListProvider.state ==
                 GetRestaurantListState.noData) {
               return const Center(
                 child: Text('No Data'),
               );
-            } else if (restaurantListState.state ==
+            } else if (restaurantListProvider.state ==
                 GetRestaurantListState.hasData) {
               final List<Restaurant> restaurant =
-                  restaurantListState.restaurantListResponse.restaurants!;
+                  restaurantListProvider.restaurantListResponse.restaurants!;
               return ListView.builder(
                 itemCount: restaurant.length,
                 itemBuilder: (context, index) {
@@ -57,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                          'Error: ${restaurantListState.errorMessage.substring(10)}'),
+                          'Error: ${restaurantListProvider.errorMessage.substring(10)}'),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
