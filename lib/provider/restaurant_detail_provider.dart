@@ -8,27 +8,7 @@ class RestaurantDetailProvider extends ChangeNotifier {
 
   RestaurantDetailProvider(
       {required this.apiService, required this.restaurantId}) {
-    _fetchRestaurantDetail(restaurantId);
-  }
-
-  Future<void> _fetchRestaurantDetail(String restaurantId) async {
-    try {
-      _state = GetRestaurantDetailState.loading;
-      notifyListeners();
-      final getRestaurantDetailResult =
-          await apiService.getRestaurantDetail(restaurantId);
-      if (getRestaurantDetailResult.restaurant == null) {
-        _state = GetRestaurantDetailState.noData;
-        notifyListeners();
-      } else {
-        _state = GetRestaurantDetailState.hasData;
-        _restaurantDetailResponse = getRestaurantDetailResult;
-        notifyListeners();
-      }
-    } catch (e) {
-      _state = GetRestaurantDetailState.error;
-      notifyListeners();
-    }
+    fetchRestaurantDetail(restaurantId);
   }
 
   late RestaurantDetailResponse _restaurantDetailResponse;
@@ -37,6 +17,36 @@ class RestaurantDetailProvider extends ChangeNotifier {
 
   late GetRestaurantDetailState _state;
   GetRestaurantDetailState get state => _state;
+  void _setState(GetRestaurantDetailState state) {
+    _state = state;
+    notifyListeners();
+  }
+
+  late String _errorMessage;
+  String get errorMessage => _errorMessage;
+  void _setErrorState(String errorMessage) {
+    _errorMessage = errorMessage;
+    _state = GetRestaurantDetailState.error;
+    notifyListeners();
+  }
+
+
+
+  Future<void> fetchRestaurantDetail(String restaurantId) async {
+    try {
+      _setState(GetRestaurantDetailState.loading);
+      final getRestaurantDetailResult =
+          await apiService.getRestaurantDetail(restaurantId);
+      if (getRestaurantDetailResult.restaurant == null) {
+        _setState(GetRestaurantDetailState.noData);
+      } else {
+        _restaurantDetailResponse = getRestaurantDetailResult;
+        _setState(GetRestaurantDetailState.hasData);
+      }
+    } catch (e) {
+      _setErrorState(e.toString());
+    }
+  }
 }
 
 enum GetRestaurantDetailState { loading, noData, hasData, error }

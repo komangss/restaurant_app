@@ -17,7 +17,7 @@ class RestaurantDetailScreen extends StatelessWidget {
         case GetRestaurantDetailState.loading:
           return Scaffold(
             appBar: AppBar(
-              title: Text('Loading...'),
+              title: const Text('Loading...'),
             ),
             body: const Center(
               child: CircularProgressIndicator.adaptive(),
@@ -26,7 +26,7 @@ class RestaurantDetailScreen extends StatelessWidget {
         case GetRestaurantDetailState.noData:
           return Scaffold(
             appBar: AppBar(
-              title: Text('Empty'),
+              title: const Text('Empty'),
             ),
             body: const Center(
               child: Text('the detail data is empty'),
@@ -70,17 +70,18 @@ class RestaurantDetailScreen extends StatelessWidget {
         case GetRestaurantDetailState.error:
           return Scaffold(
             appBar: AppBar(
-              title: Text('Restaurant Details'),
+              title: const Text('Restaurant Details'),
             ),
-            body: const Center(
-              child: Text('the detail data is empty'),
+            body: Center(
+              child: Text(
+                  'Error: ${restaurantDetailProvider.errorMessage.substring(10)}'),
             ),
           );
 
         default:
           return Scaffold(
             appBar: AppBar(
-              title: Text('Restaurant Details'),
+              title: const Text('Restaurant Details'),
             ),
             body: const Center(
               child: Text('the detail data is empty'),
@@ -96,9 +97,9 @@ class RestaurantDetailScreen extends StatelessWidget {
       child: Hero(
         tag: pictureId ?? '',
         child: pictureId == null
-            ? Container(
+            ? const SizedBox(
                 height: 300,
-                child: const Placeholder(),
+                child: Placeholder(),
               )
             : Image.network(
                 'https://restaurant-api.dicoding.dev/images/medium/${pictureId}',
