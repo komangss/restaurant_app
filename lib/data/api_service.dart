@@ -34,4 +34,10 @@ class ApiService {
       throw Exception("Bad response format 👎");
     }
   }
+
+  Future<RestaurantListResponse> searchRestaurant(String query) async {
+    final response = await http.get(Uri.parse("$_baseUrl/search?q=$query"));
+    var responseBody = json.decode(response.body);
+    return RestaurantListResponse.fromJson(responseBody);
+  }
 }
