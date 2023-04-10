@@ -41,6 +41,21 @@ class RestaurantListProvider extends ChangeNotifier {
       _setErrorState(e.toString());
     }
   }
+
+  Future<void> searchRestaurant(String query) async {
+    try {
+      _setState(GetRestaurantListState.loading);
+      final getRestaurantListResult = await apiService.searchRestaurant(query);
+      if (getRestaurantListResult.restaurants == null) {
+        _setState(GetRestaurantListState.noData);
+      } else {
+        _restaurantListResponse = getRestaurantListResult;
+        _setState(GetRestaurantListState.hasData);
+      }
+    } catch (e) {
+      _setErrorState(e.toString());
+    }
+  }
 }
 
 enum GetRestaurantListState { loading, noData, hasData, error }

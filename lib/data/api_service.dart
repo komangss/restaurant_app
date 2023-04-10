@@ -15,7 +15,7 @@ class ApiService {
     } on SocketException {
       throw Exception('No Internet connection 😑');
     } on HttpException {
-      throw Exception("Couldn't find the post 😱");
+      throw Exception("Couldn't find the restaurants 😱");
     } on FormatException {
       throw Exception("Bad response format 👎");
     }
@@ -29,15 +29,23 @@ class ApiService {
     } on SocketException {
       throw Exception('No Internet connection 😑');
     } on HttpException {
-      throw Exception("Couldn't find the post 😱");
+      throw Exception("Couldn't find the restaurants 😱");
     } on FormatException {
       throw Exception("Bad response format 👎");
     }
   }
 
   Future<RestaurantListResponse> searchRestaurant(String query) async {
+    try {
     final response = await http.get(Uri.parse("$_baseUrl/search?q=$query"));
     var responseBody = json.decode(response.body);
     return RestaurantListResponse.fromJson(responseBody);
+    } on SocketException {
+      throw Exception('No Internet connection 😑');
+    } on HttpException {
+      throw Exception("Couldn't find the restaurants 😱");
+    } on FormatException {
+      throw Exception("Bad response format 👎");
+    }
   }
 }

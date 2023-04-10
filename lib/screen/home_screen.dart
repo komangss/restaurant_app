@@ -18,9 +18,37 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             ..._buildHomeHeader(context),
+            _buildSearchInput(context),
             _buildHomeBody(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Padding _buildSearchInput(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: TextField(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+          hintText: 'Enter a search term',
+          prefixIcon: const Icon(
+            Icons.search_rounded,
+            color: Colors.black45,
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderSide: BorderSide(
+              color: Colors.black,
+            ),
+          ),
+          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        ),
+        onChanged: (value) {
+          Provider.of<RestaurantListProvider>(context, listen: false)
+              .searchRestaurant(value);
+        },
       ),
     );
   }
@@ -31,7 +59,8 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.only(top: 4.0),
         child: Consumer<RestaurantListProvider>(
           builder: (_, restaurantListProvider, __) {
-            if (restaurantListProvider.state == GetRestaurantListState.loading) {
+            if (restaurantListProvider.state ==
+                GetRestaurantListState.loading) {
               return const Center(child: CircularProgressIndicator.adaptive());
             } else if (restaurantListProvider.state ==
                 GetRestaurantListState.noData) {
@@ -67,7 +96,9 @@ class HomeScreen extends StatelessWidget {
                           color: Colors.black,
                         ),
                         onPressed: () async {
-                          Provider.of<RestaurantListProvider>(context, listen: false).fetchRestaurantList();
+                          Provider.of<RestaurantListProvider>(context,
+                                  listen: false)
+                              .fetchRestaurantList();
                         },
                         label: Text(
                           'Refresh',
