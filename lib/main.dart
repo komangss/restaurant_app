@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider<RestaurantDetailProvider>(
               create: (_) => RestaurantDetailProvider(
                   apiService: ApiService(),
-                  // ToDo: cok kok ada 2 restaurant id
                   restaurantId:
                       ModalRoute.of(context)?.settings.arguments as String),
               child: const RestaurantDetailScreen(),
