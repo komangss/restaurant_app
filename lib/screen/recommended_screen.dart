@@ -55,7 +55,7 @@ class RecommendedScreen extends StatelessWidget {
                         itemCount: restaurant.length,
                         itemBuilder: (context, index) {
                                 return ItemList(restaurant: restaurant[index], onItemTap: () => Navigator.of(context).pushNamed(
-                                    RestaurantDetailScreen.routeName),);
+                                    RestaurantDetailScreen.routeName, arguments: restaurant[index].id),);
                                 },
                     );
                 default:
