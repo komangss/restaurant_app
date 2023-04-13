@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:restaurant/screen/restaurant_detail_screen.dart';
-
-import '../models/restaurant.dart';
-import '../provider/restaurant_list_provider.dart';
+import 'favorite_screen.dart';
+import 'recommended_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static String routeName = "/home";

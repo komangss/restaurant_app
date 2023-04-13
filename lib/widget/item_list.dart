@@ -6,7 +6,7 @@ class ItemList extends StatelessWidget {
   const ItemList({
     super.key,
     required this.restaurant,
-    required this.
+    required this.onItemTap,
   });
 
   final Restaurant restaurant;
@@ -16,7 +16,7 @@ class ItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       GestureDetector(
-        onTap: () => onNavigationTap(), 
+        onTap: () => onItemTap(),
         child: ListTile(
           leading: ConstrainedBox(
             constraints: const BoxConstraints(

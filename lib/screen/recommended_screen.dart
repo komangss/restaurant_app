@@ -5,6 +5,8 @@ import 'package:restaurant/screen/restaurant_detail_screen.dart';
 
 import '../models/restaurant.dart';
 import '../provider/restaurant_list_provider.dart';
+import '../widget/item_list.dart';
+import '../widget/search_text_field.dart';
 
 class RecommendedScreen extends StatelessWidget {
   const RecommendedScreen({super.key});
@@ -52,9 +54,8 @@ class RecommendedScreen extends StatelessWidget {
                     return ListView.builder(
                         itemCount: restaurant.length,
                         itemBuilder: (context, index) {
-                                return ItemList(restaurant: restaurant[index], onNavigationTap: () => Navigator.of(context).pushNamed(
-                                    RestaurantDetailScreen.routeName,
-                                    arguments: restaurant.id),);
+                                return ItemList(restaurant: restaurant[index], onItemTap: () => Navigator.of(context).pushNamed(
+                                    RestaurantDetailScreen.routeName),);
                                 },
                     );
                 default:
@@ -88,7 +89,7 @@ class RecommendedScreen extends StatelessWidget {
                     )
                   ],
                 ),
-              )
+              );
             }
           },
         ),
