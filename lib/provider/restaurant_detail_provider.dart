@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../data/api_service.dart';
+import '../data/remote/api_service.dart';
 import '../models/restaurant_detail_response.dart';
 
 class RestaurantDetailProvider extends ChangeNotifier {

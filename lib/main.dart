@@ -5,7 +5,7 @@ import 'package:restaurant/provider/restaurant_list_provider.dart';
 import 'package:restaurant/screen/restaurant_detail_screen.dart';
 import '/styles/typhography.dart';
 
-import 'data/api_service.dart';
+import 'data/remote/api_service.dart';
 import 'screen/home_screen.dart';
 import 'styles/app_bar.dart';
 
