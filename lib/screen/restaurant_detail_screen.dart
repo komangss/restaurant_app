@@ -91,24 +91,65 @@ class RestaurantDetailScreen extends StatelessWidget {
     });
   }
 
-  SizedBox _buildHomeImage(String? pictureId) {
-    return SizedBox(
-      width: double.infinity,
-      child: Hero(
-        tag: pictureId ?? '',
-        child: pictureId == null
-            ? const SizedBox(
-                height: 300,
-                child: Placeholder(),
-              )
-            : Image.network(
-                'https://restaurant-api.dicoding.dev/images/medium/$pictureId',
-                fit: BoxFit.cover,
-                errorBuilder: (ctx, error, _) =>
-                    const Center(child: Icon(Icons.error)),
-              ),
-      ),
+  Widget _buildHomeImage(String? pictureId) {
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 15),
+            child: Hero(
+              tag: pictureId ?? '',
+              child: pictureId == null
+                  ? const SizedBox(
+                      height: 300,
+                      child: Placeholder(),
+                    )
+                  : Image.network(
+                      'https://restaurant-api.dicoding.dev/images/medium/$pictureId',
+                      fit: BoxFit.cover,
+                      errorBuilder: (ctx, error, _) =>
+                          const Center(child: Icon(Icons.error)),
+                    ),
+            ),
+          ),
+        ),
+        Positioned(
+          right: 24,
+          bottom:0,
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(),
+                color: Colors.white,
+                shape: BoxShape.circle),
+            child: IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.favorite_border,
+                  color: Colors.black,
+                )),
+          ),
+        )
+      ],
     );
+    // return SizedBox(
+    //   width: double.infinity,
+    //   child: Hero(
+    //     tag: pictureId ?? '',
+    //     child: pictureId == null
+    //         ? const SizedBox(
+    //             height: 300,
+    //             child: Placeholder(),
+    //           )
+    //         : Image.network(
+    //             'https://restaurant-api.dicoding.dev/images/medium/$pictureId',
+    //             fit: BoxFit.cover,
+    //             errorBuilder: (ctx, error, _) =>
+    //                 const Center(child: Icon(Icons.error)),
+    //           ),
+    //   ),
+    // );
   }
 
   Column buildRestaurantDetail(Restaurant restaurant, BuildContext context) {
