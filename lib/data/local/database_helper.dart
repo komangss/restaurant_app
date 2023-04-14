@@ -30,7 +30,7 @@ class DatabaseHelper {
              categories TEXT,
              menus TEXT,
              rating TEXT,
-             customerReviews TEXT,
+             customerReviews TEXT
            )     
         ''');
       },

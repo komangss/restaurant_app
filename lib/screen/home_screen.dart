@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant/data/local/database_helper.dart';
+import 'package:restaurant/provider/favorites_restaurant.dart';
+import '../data/remote/api_service.dart';
+import '../provider/restaurant_list_provider.dart';
 import 'favorite_screen.dart';
 import 'recommended_screen.dart';
 
@@ -15,8 +20,15 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> bottomNavScreen = [
-    const RecommendedScreen(),
-    const FavoriteScreen(),
+    ChangeNotifierProvider<RestaurantListProvider>(
+      create: (_) => RestaurantListProvider(apiService: ApiService()),
+      child: const RecommendedScreen(),
+    ),
+    ChangeNotifierProvider<FavoritesRestaurantProvider>(
+      create: (_) =>
+          FavoritesRestaurantProvider(databaseHelper: DatabaseHelper()),
+      child: const FavoriteScreen(),
+    ),
   ];
 
   @override
@@ -52,4 +64,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

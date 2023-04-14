@@ -28,10 +28,7 @@ class MyApp extends StatelessWidget {
       initialRoute: HomeScreen.routeName,
       routes: {
         HomeScreen.routeName: (context) =>
-            ChangeNotifierProvider<RestaurantListProvider>(
-              create: (_) => RestaurantListProvider(apiService: ApiService()),
-              child: const HomeScreen(),
-            ),
+        const HomeScreen(),
         RestaurantDetailScreen.routeName: (context) =>
             ChangeNotifierProvider<RestaurantDetailProvider>(
               create: (_) => RestaurantDetailProvider(
@@ -39,7 +36,8 @@ class MyApp extends StatelessWidget {
                   restaurantId:
                       ModalRoute.of(context)?.settings.arguments as String),
               child: const RestaurantDetailScreen(),
-            )
+            ),
+        
       },
     );
   }
