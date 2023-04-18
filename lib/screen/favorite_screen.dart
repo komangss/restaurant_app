@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant/screen/favorite_restaurant_detail_screen.dart';
 import '../provider/favorites_restaurant_provider.dart';
 
 import '../models/restaurant.dart';
@@ -28,11 +29,14 @@ class FavoriteScreen extends StatelessWidget {
                   itemCount: restaurant.length,
                   itemBuilder: (context, index) {
                     return ItemList(
-                        restaurant: restaurant[index], onItemTap: () {}
-                        // Navigator.of(context).pushNamed(
-                        //     RestaurantDetailScreen.routeName,
-                        //     arguments: restaurant[index].id),
-                        );
+                      restaurant: restaurant[index],
+                      onItemTap: () => Navigator.of(context).pushNamed(
+                          FavoriteRestaurantDetailScreen.routeName,
+                          arguments: restaurant[index].id)
+                        ..then((_) {
+                          restaurantListProvider.getFavoriteRestaurants();
+                        }),
+                    );
                   },
                 );
               default:

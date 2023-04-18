@@ -41,21 +41,6 @@ class FavoritesRestaurantProvider extends ChangeNotifier {
       _setErrorState(e.toString());
     }
   }
-
-  // Future<void> searchRestaurant(String query) async {
-  //   try {
-  //     _setState(FavoritesRestaurantState.loading);
-  //     final favoriteRestaurants = await databaseHelper.searchRestaurant(query);
-  //     if (favoriteRestaurants.restaurants == null) {
-  //       _setState(FavoritesRestaurantState.noData);
-  //     } else {
-  //       _favoriteRestaurants = favoriteRestaurants;
-  //       _setState(FavoritesRestaurantState.hasData);
-  //     }
-  //   } catch (e) {
-  //     _setErrorState(e.toString());
-  //   }
-  // }
 }
 
 enum FavoritesRestaurantState { loading, noData, hasData, error }

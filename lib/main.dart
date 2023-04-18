@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/data/local/database_helper.dart';
+import 'package:restaurant/provider/favorite_restaurant_detail_provider.dart';
 import 'package:restaurant/provider/restaurant_detail_provider.dart';
+import 'package:restaurant/screen/favorite_restaurant_detail_screen.dart';
 import 'package:restaurant/screen/restaurant_detail_screen.dart';
 import '/styles/typhography.dart';
 
@@ -36,6 +38,14 @@ class MyApp extends StatelessWidget {
                   restaurantId:
                       ModalRoute.of(context)?.settings.arguments as String),
               child: const RestaurantDetailScreen(),
+            ),
+        FavoriteRestaurantDetailScreen.routeName: (context) =>
+            ChangeNotifierProvider<FavoriteRestaurantDetailProvider>(
+              create: (_) => FavoriteRestaurantDetailProvider(
+                  databaseHelper: DatabaseHelper(),
+                  restaurantId:
+                      ModalRoute.of(context)?.settings.arguments as String),
+              child: const FavoriteRestaurantDetailScreen(),
             ),
       },
     );

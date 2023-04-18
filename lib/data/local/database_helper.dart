@@ -53,7 +53,6 @@ class DatabaseHelper {
 
   Future<List<Restaurant>> getRestaurants() async {
     final db = await database;
-    List<dynamic> resultsOri = await db!.query(_tblRestaurant);
     List<Map<String, dynamic>> results = await db!.query(_tblRestaurant);
 
     return results.map((res) => Restaurant.fromJson(res)).toList();
