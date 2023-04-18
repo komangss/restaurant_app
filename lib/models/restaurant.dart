@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Restaurant {
   Restaurant({
     required this.id,
@@ -23,24 +25,51 @@ class Restaurant {
   double? rating;
   List<CustomerReview>? customerReviews;
 
-  factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        city: json["city"],
-        address: json["address"],
-        pictureId: json["pictureId"],
-        categories: json["categories"] == null
-            ? []
-            : List<Category>.from(
-                json["categories"]!.map((x) => Category.fromJson(x))),
-        menus: json["menus"] == null ? null : Menus.fromJson(json["menus"]),
-        rating: json["rating"]?.toDouble(),
-        customerReviews: json["customerReviews"] == null
-            ? []
-            : List<CustomerReview>.from(json["customerReviews"]!
-                .map((x) => CustomerReview.fromJson(x))),
-      );
+  factory Restaurant.fromJson(Map<String, dynamic> json) {
+    List<Category>? categoriesResult = [];
+
+    if (json["categories"] != null) {
+      if (json["categories"] is! String) {
+        categoriesResult = (json["categories"] as List<dynamic>)
+            .map((e) => Category.fromJson(e))
+            .toList();
+      } else {
+        categoriesResult = jsonDecode(json["categories"]).map<Category>((e) => Category(name: e['name'])).toList();
+      }
+    }
+    List<CustomerReview>? customerReviews = [];
+    if (json["customerReviews"] != null && json["customerReviews"] is! String) {
+      if (json["customerReviews"] is! String) {
+        customerReviews = (json["customerReviews"] as List<dynamic>)
+            .map((e) => CustomerReview.fromJson(e))
+            .toList();
+      } else {
+        customerReviews =
+        jsonDecode(json["customerReviews"]).map<CustomerReview>((e) => CustomerReview(name: e['name'], date: e['date'], review: e['review'])).toList();
+      }
+    }
+    // Menus menus = json["menus"] == null ? null : Menus.fromJson(json["menus"]);
+
+    double rating = 0.0;
+    if(json["rating"] is String) {
+      rating = double.parse(json['rating']);
+    } else {
+      rating = json['rating']?.toDouble();
+    }
+
+    return Restaurant(
+      id: json["id"],
+      name: json["name"],
+      description: json["description"],
+      city: json["city"],
+      address: json["address"],
+      pictureId: json["pictureId"],
+      categories: categoriesResult,
+      menus: json["menus"] == null ? null : Menus.fromJson(json["menus"] !is String ? jsonDecode(json["menus"]) : json['menus']),
+      rating: rating,
+      customerReviews: customerReviews,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -49,14 +78,14 @@ class Restaurant {
         "city": city,
         "address": address,
         "pictureId": pictureId,
-        "categories": categories == null
+        "categories": jsonEncode(categories == null
             ? []
-            : List<dynamic>.from(categories!.map((x) => x.toJson())),
-        "menus": menus?.toJson(),
+            : List<dynamic>.from(categories!.map((x) => x.toJson()))),
+        "menus": jsonEncode(menus?.toJson()),
         "rating": rating,
-        "customerReviews": customerReviews == null
+        "customerReviews": jsonEncode(customerReviews == null
             ? []
-            : List<dynamic>.from(customerReviews!.map((x) => x.toJson())),
+            : List<dynamic>.from(customerReviews!.map((x) => x.toJson()))),
       };
 }
 

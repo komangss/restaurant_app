@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant/data/local/database_helper.dart';
 import '../data/remote/api_service.dart';
+import '../models/restaurant.dart';
 import '../models/restaurant_detail_response.dart';
 
 class RestaurantDetailProvider extends ChangeNotifier {
   final ApiService apiService;
+  final DatabaseHelper databaseHelper;
+
   final String restaurantId;
 
-  RestaurantDetailProvider(
-      {required this.apiService, required this.restaurantId}) {
+  RestaurantDetailProvider({
+    required this.apiService,
+    required this.restaurantId,
+    required this.databaseHelper,
+  }) {
     fetchRestaurantDetail(restaurantId);
   }
 
@@ -30,17 +37,44 @@ class RestaurantDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool get isFavoriteRestaurant => _isFavoriteRestaurant;
+  late bool _isFavoriteRestaurant;
+  void setFavRestaurantStatus(bool isFav) {
+    _isFavoriteRestaurant = isFav;
+    notifyListeners();
+  }
 
+  void setFavRestaurant(Restaurant restaurant) async {
+    await databaseHelper.insertRestaurant(restaurant);
+    setFavRestaurantStatus(true);
+  }
+
+  void removeFavRestaurant(String restaurantId) async {
+    await databaseHelper.removeRestaurant(restaurantId);
+    setFavRestaurantStatus(false);
+  }
+
+  Future<void> getFavRestaurantFromDB(String restaurantId) async {
+    var getRestaurantFromDb =
+        await databaseHelper.getRestaurantById(restaurantId);
+    if (getRestaurantFromDb != null) {
+      setFavRestaurantStatus(true);
+    } else {
+      setFavRestaurantStatus(false);
+    }
+  }
 
   Future<void> fetchRestaurantDetail(String restaurantId) async {
     try {
       _setState(GetRestaurantDetailState.loading);
       final getRestaurantDetailResult =
           await apiService.getRestaurantDetail(restaurantId);
+      await getFavRestaurantFromDB(restaurantId);
       if (getRestaurantDetailResult.restaurant == null) {
         _setState(GetRestaurantDetailState.noData);
       } else {
         _restaurantDetailResponse = getRestaurantDetailResult;
+
         _setState(GetRestaurantDetailState.hasData);
       }
     } catch (e) {
