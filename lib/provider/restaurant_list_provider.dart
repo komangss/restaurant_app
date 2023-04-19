@@ -19,8 +19,7 @@ class RestaurantListProvider extends ChangeNotifier {
   String get errorMessage => _errorMessage;
   void _setErrorState(String errorMessage) {
     _errorMessage = errorMessage;
-    _state = GetRestaurantListState.error;
-    notifyListeners();
+    _setState(GetRestaurantListState.error);
   }
 
   RestaurantListProvider({required this.apiService}) {

@@ -41,6 +41,21 @@ class FavoritesRestaurantProvider extends ChangeNotifier {
       _setErrorState(e.toString());
     }
   }
+
+  Future<void> searchRestaurant(String value) async {
+    try{
+      _setState(FavoritesRestaurantState.loading);
+      final searchedFavRestaurants = await databaseHelper.searchRestaurant(value);
+      if (searchedFavRestaurants.isEmpty) {
+        _setState(FavoritesRestaurantState.noData);
+      } else {
+        _favoriteRestaurants = searchedFavRestaurants;
+        _setState(FavoritesRestaurantState.hasData);
+      }
+    } catch (e) {
+      _setErrorState(e.toString());
+    }
+  }
 }
 
 enum FavoritesRestaurantState { loading, noData, hasData, error }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/data/local/database_helper.dart';
+import 'package:restaurant/screen/setting_screen.dart';
 import '../provider/favorites_restaurant_provider.dart';
 import '../data/remote/api_service.dart';
 import '../provider/restaurant_list_provider.dart';
+import '../provider/scheduling_provider.dart';
 import 'favorite_screen.dart';
 import 'recommended_screen.dart';
 
@@ -29,6 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
           FavoritesRestaurantProvider(databaseHelper: DatabaseHelper()),
       child: const FavoriteScreen(),
     ),
+    ChangeNotifierProvider<SchedulingProvider>(
+      create: (_) => SchedulingProvider(),
+      child: const SettingScreen(),
+    ),
   ];
 
   @override
@@ -52,6 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border_outlined),
             label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
         currentIndex: _selectedIndex,

@@ -5,12 +5,44 @@ import '../provider/favorites_restaurant_provider.dart';
 
 import '../models/restaurant.dart';
 import '../widget/item_list.dart';
+import '../widget/search_text_field.dart';
 
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          Text(
+            'Favs Restaurants!',
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium
+                ?.copyWith(color: Colors.black),
+          ),
+          Text(
+            'Your lovely saved restaurants',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SearchTextField(
+              hintText: 'Enter a name or location here...',
+              onChanged: (value) {
+                Provider.of<FavoritesRestaurantProvider>(context, listen: false)
+                    .searchRestaurant(value);
+              },
+            ),
+          ),
+          _buildFavorieList(context),
+        ],
+      ),
+    );
+  }
+
+  Expanded _buildFavorieList(BuildContext context) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(top: 4.0),

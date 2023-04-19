@@ -1,4 +1,3 @@
-
 import 'package:sqflite/sqflite.dart';
 
 import '../../models/restaurant.dart';
@@ -20,7 +19,8 @@ class DatabaseHelper {
     var db = openDatabase(
       '$path/newsapp.db',
       onCreate: (db, version) async {
-        await db.execute('''CREATE TABLE $_tblRestaurant (
+        await db.execute(
+            '''CREATE TABLE $_tblRestaurant (
              id TEXT PRIMARY KEY,
              name TEXT,
              description TEXT,
@@ -72,6 +72,14 @@ class DatabaseHelper {
     } else {
       return null;
     }
+  }
+
+  Future<List<Restaurant>> searchRestaurant(String query) async {
+    final db = await database;
+    List<Map<String, dynamic>> results = await db!.query(_tblRestaurant,
+        where: "name LIKE ? or city = ? or address = ?",
+        whereArgs: ['$query%', '$query%', '$query%']);
+    return results.map((res) => Restaurant.fromJson(res)).toList();
   }
 
   Future<void> removeRestaurant(String id) async {
