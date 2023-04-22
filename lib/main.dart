@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/data/local/database_helper.dart';
 import 'package:restaurant/provider/favorite_restaurant_detail_provider.dart';
@@ -24,11 +25,15 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Permission.notification.isDenied.then((value) {
+    if (value) {
+      Permission.notification.request();
+    }
+  });
   final NotificationHelper notificationHelper = NotificationHelper();
   final BackgroundService service = BackgroundService();
 
   service.initializeIsolate();
-
   if (Platform.isAndroid) {
     await AndroidAlarmManager.initialize();
   }

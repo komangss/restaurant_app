@@ -55,7 +55,7 @@ class FavoriteRestaurantDetailProvider extends ChangeNotifier {
       var getRestaurantDetailResultDB =
           await databaseHelper.getRestaurantById(restaurantId);
       final getRestaurantDetailResult = Restaurant.fromJson(getRestaurantDetailResultDB as Map<String, dynamic>);
-      if (getRestaurantDetailResult == null) {
+      if (getRestaurantDetailResult.id == '') {
         _setState(GetFavoriteRestaurantDetailState.noData);
       } else {
         setFavRestaurantStatus(true);
