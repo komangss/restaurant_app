@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/data/local/database_helper.dart';
+import 'package:restaurant/data/local/preferences_helper.dart';
 import 'package:restaurant/screen/setting_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../provider/favorites_restaurant_provider.dart';
 import '../data/remote/api_service.dart';
 import '../provider/restaurant_list_provider.dart';
@@ -32,7 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: const FavoriteScreen(),
     ),
     ChangeNotifierProvider<SchedulingProvider>(
-      create: (_) => SchedulingProvider(),
+      create: (_) => SchedulingProvider(
+          preferencesHelper: PreferencesHelper(
+              sharedPreferences: SharedPreferences.getInstance())),
       child: const SettingScreen(),
     ),
   ];

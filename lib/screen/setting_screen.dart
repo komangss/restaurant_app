@@ -15,14 +15,21 @@ class SettingScreen extends StatelessWidget {
           child: ListTile(
             title: const Text('Scheduling News'),
             trailing: Consumer<SchedulingProvider>(
-              builder: (context, scheduled, _) {
+              builder: (context, provider, _) {
                 return Switch.adaptive(
-                  value: scheduled.isScheduled,
+                  value: provider.isScheduled,
                   onChanged: (value) async {
                     if (Platform.isIOS) {
                       customDialog(context);
                     } else {
-                      scheduled.scheduledNews(value);
+                      provider.setIsScheduleState(value);
+                      var snackBar = SnackBar(
+                        content: value
+                            ? const Text(
+                                'You will receive restaurant notifications every 11 am :)')
+                            : const Text('notifications turned off :('),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
                 );
