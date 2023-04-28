@@ -22,6 +22,7 @@ class SchedulingProvider extends ChangeNotifier {
 
   Future<void> updateCurrentState() async {
     _isScheduled = await preferencesHelper.notificationScheduleState;
+    notifyListeners();
   }
 
   Future<bool> scheduledNews() async {
