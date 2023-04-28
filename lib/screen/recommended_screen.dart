@@ -40,7 +40,7 @@ class RecommendedScreen extends StatelessWidget {
   Expanded _buildHomeBody(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(top: 4.0),
+        padding: const EdgeInsets.only(top: 4.0, bottom: 60.0,),
         child: Consumer<RestaurantListProvider>(
           builder: (_, restaurantListProvider, __) {
             switch(restaurantListProvider.state) {
